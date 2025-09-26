@@ -6,72 +6,38 @@ body {
     padding: 20px;
 }
 
+/* --- Layout Container for Side-by-Side View --- */
+#app-wrapper {
+    display: flex;
+    justify-content: center; /* Center the whole content block */
+    gap: 30px; /* Space between the two columns */
+    max-width: 1200px; /* Limit overall width */
+    margin: 0 auto;
+    text-align: left; /* Reset text alignment for content inside */
+}
+
 header {
     margin-bottom: 40px;
     color: #e91e63; /* Pink header */
+    text-align: center;
 }
 
+/* --- Main Selection Area (Left Column) --- */
 #chooser-app {
-    max-width: 600px;
-    margin: 0 auto;
+    flex-grow: 2; /* Takes up more space than the list */
+    max-width: 700px; /* Max width for the main content */
     background-color: #fff;
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
+#chooser-app h2 { /* Targeting the stage title */
     color: #4a4a4a;
     margin-bottom: 25px;
+    text-align: center;
+    font-size: 1.6em;
 }
 
-#options-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-}
-
-.choice-button {
-    background-color: #ff69b4; /* Hot Pink */
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
-    flex: 1 1 45%; /* Allows two buttons per line on wider screens */
-    min-width: 150px;
-}
-
-.choice-button:hover {
-    background-color: #e91e63; /* Slightly darker pink on hover */
-    transform: translateY(-2px);
-}
-
-#result-container {
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-}
-
-#final-choice {
-    margin: 20px 0;
-    font-size: 1.1em;
-    line-height: 1.6;
-}
-
-.hidden {
-    display: none;
-}
-
-/* Style for the "Choose Again" button */
-#result-container button {
-    background-color: #00bcd4; /* Cyan/Blue for reset */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
+/* --- Itinerary List Area (Right Column) --- */
+#
