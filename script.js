@@ -30,14 +30,8 @@ const itinerary = [
         description: 'We get to spend time late into the night, and then crash into our own separate rooms at the St. Regis for the night',
         options: [
             { text: 'Yes!', nextStageId: 'vibe' },
-            { text: 'No', nextStageId: 'vibe' } // This still leads to Vibe, as per your request.
+            { text: 'No', nextStageId: 'vibe' }
         ]
-    },
-    {
-        id: 'check-in',
-        title: 'Check-in',
-        description: 'Time to check in at the St. Regis.',
-        options: ['Let\'s check-in'],
     },
     {
         id: 'vibe',
@@ -181,7 +175,7 @@ function renderCurrentStage() {
     }
 }
 
-// MODIFIED handleSelection function with the new logic
+
 function handleSelection(stageId, choice) {
     const choiceText = typeof choice === 'object' ? choice.text : choice;
     selectionHistory[stageId] = choiceText;
@@ -197,7 +191,7 @@ function handleSelection(stageId, choice) {
     let nextIndex;
     if (typeof choice === 'object' && choice.nextStageId) {
         nextIndex = itinerary.findIndex(stage => stage.id === choice.nextStageId);
-    } else if (stageId === 'dinner' && selectionHistory['stay'] === 'No') { // NEW: Logic for "No Stay"
+    } else if (stageId === 'dinner' && selectionHistory['stay'] === 'No') {
         nextIndex = itinerary.findIndex(stage => stage.id === 'goodnight');
     } else {
         nextIndex = currentIndex + 1;
