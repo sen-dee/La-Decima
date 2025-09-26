@@ -1,4 +1,3 @@
-// 1. MODIFIED: The itinerary array now includes descriptions and conditional logic.
 const itinerary = [
     {
         id: '1100-meetup',
@@ -28,19 +27,13 @@ const itinerary = [
         id: 'stay',
         title: '!! STAY !!',
         description: 'We get to spend time late into the night, and then crash into our own separate rooms at the St. Regis for the night',
-        options: [
-            { text: 'Yes!', nextStageId: 'vibe' },
-            { text: 'No', nextStageId: 'vibe' }
-        ]
+        options: ['Yes!', 'No']
     },
     {
         id: 'vibe',
         title: 'What\'s the Vibe?',
         description: 'How are we feeling for dinner?',
-        options: [
-            { text: 'Mush', nextStageId: 'dinner' },
-            { text: 'Guarded', nextStageId: 'dinner' }
-        ],
+        options: ['Mush', 'Guarded'],
     },
     {
         id: 'dinner',
