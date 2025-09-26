@@ -1,0 +1,77 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f8f8ff; /* Light, calm background */
+    color: #333;
+    text-align: center;
+    padding: 20px;
+}
+
+header {
+    margin-bottom: 40px;
+    color: #e91e63; /* Pink header */
+}
+
+#chooser-app {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #4a4a4a;
+    margin-bottom: 25px;
+}
+
+#options-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.choice-button {
+    background-color: #ff69b4; /* Hot Pink */
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    flex: 1 1 45%; /* Allows two buttons per line on wider screens */
+    min-width: 150px;
+}
+
+.choice-button:hover {
+    background-color: #e91e63; /* Slightly darker pink on hover */
+    transform: translateY(-2px);
+}
+
+#result-container {
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+#final-choice {
+    margin: 20px 0;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Style for the "Choose Again" button */
+#result-container button {
+    background-color: #00bcd4; /* Cyan/Blue for reset */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
