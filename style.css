@@ -188,3 +188,25 @@ header h1 {
         order: -1; /* NEW: Display the summary list *before* the choices on mobile */
     }
 }
+
+/* --- Add this to your existing CSS file --- */
+
+.back-button {
+    display: block;
+    width: auto; /* Allow it to be smaller */
+    padding: 10px 20px;
+    margin: 20px auto 0; /* Margin top, center horizontally, margin bottom */
+    border: none;
+    background-color: transparent;
+    color: #777;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.back-button:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
