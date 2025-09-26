@@ -8,7 +8,7 @@ body {
     background-color: #f8f8ff; /* Light, calm fallback background color */
     color: #333;
     margin: 0;
-    padding: 0; /* REMOVE PADDING FROM BODY */
+    padding: 0;
     
     /* NEW: Flexbox properties to center the entire content block */
     display: flex;
@@ -111,7 +111,7 @@ header h1 {
     display: block;
     width: 100%;
     padding: 15px 20px;
-    margin: 8px 0; /* Vertical spacing between buttons */
+    margin: 15px 0; /* MODIFIED: Increased vertical spacing from 8px to 15px */
     border: 2px solid #ffb6c1; /* Light Pink */
     background-color: #fff;
     color: #e91e63;
@@ -146,6 +146,18 @@ header h1 {
 .reset-button:hover {
     background-color: #333;
     border-color: #333;
+}
+
+/* NEW: Styling for the user input field */
+#user-input {
+    display: block;
+    width: 95%; /* Adjust width as needed */
+    padding: 15px 20px;
+    margin: 15px auto; /* Centered with vertical spacing */
+    border: 2px solid #ffb6c1;
+    border-radius: 10px;
+    font-size: 1.1em;
+    box-sizing: border-box; /* Ensures padding doesn't affect total width */
 }
 
 /* --- Final Result Screen --- */
