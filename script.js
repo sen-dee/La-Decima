@@ -29,8 +29,8 @@ const itinerary = [
         title: '!! STAY !!',
         description: 'We get to spend time late into the night, and then crash into our own separate rooms at the St. Regis for the night',
         options: [
-            { text: 'Yes!', nextStageId: 'check-in' },
-            { text: 'No', nextStageId: 'goodnight' } // MODIFIED: "No" now leads to "goodnight"
+            { text: 'Yes!', nextStageId: 'vibe' },
+            { text: 'No', nextStageId: 'vibe' } // This still leads to Vibe, as per your request.
         ]
     },
     {
@@ -103,7 +103,7 @@ const itinerary = [
         options: ['Goodbye hugs'],
         isEnd: true
     },
-    { // NEW: A stage for the end of the night
+    { 
         id: 'goodnight',
         title: 'Goodnight',
         description: 'Thank you for the wonderful time. Have a safe journey home!',
@@ -181,7 +181,7 @@ function renderCurrentStage() {
     }
 }
 
-
+// MODIFIED handleSelection function with the new logic
 function handleSelection(stageId, choice) {
     const choiceText = typeof choice === 'object' ? choice.text : choice;
     selectionHistory[stageId] = choiceText;
@@ -197,6 +197,8 @@ function handleSelection(stageId, choice) {
     let nextIndex;
     if (typeof choice === 'object' && choice.nextStageId) {
         nextIndex = itinerary.findIndex(stage => stage.id === choice.nextStageId);
+    } else if (stageId === 'dinner' && selectionHistory['stay'] === 'No') { // NEW: Logic for "No Stay"
+        nextIndex = itinerary.findIndex(stage => stage.id === 'goodnight');
     } else {
         nextIndex = currentIndex + 1;
     }
