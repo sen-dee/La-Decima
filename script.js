@@ -26,11 +26,11 @@ const itinerary = [
     },
     {
         id: 'stay',
-        title: 'Continue the Night?',
-        description: 'Do we want to check into the St. Regis for the night?',
+        title: '!! STAY !!',
+        description: 'We get to spend time late into the night, and then crash into our own separate rooms at the St. Regis for the night',
         options: [
-            { text: 'Yes, let\'s stay!', nextStageId: 'check-in' },
-            { text: 'No, let\'s wrap up after dinner.', nextStageId: 'dinner' }
+            { text: 'Yes!', nextStageId: 'vibe' },
+            { text: 'No', nextStageId: 'vibe' }
         ]
     },
     {
@@ -51,7 +51,7 @@ const itinerary = [
         description: 'The main event for the evening.',
         getOptions: (history) => {
             let baseOptions = ['By the Mekong', 'Masque'];
-            if (history['stay'] === 'Yes, let\'s stay!' && history['vibe'] === 'Mush') {
+            if (history['stay'] === 'Yes!' && history['vibe'] === 'Mush') {
                 baseOptions.push('In-Room Dining');
             }
             return baseOptions;
