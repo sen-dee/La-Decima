@@ -1,102 +1,112 @@
 // 1. MODIFIED: The itinerary array now includes descriptions and conditional logic.
 const itinerary = [
-    {
-        id: '1100-meetup',
-        title: '11:00 AM - Meetup and Shop',
-        description: "Let's start the day by meeting up and doing a bit of shopping.",
-        options: ['Palladium', 'Phoenix Mills'],
-    },
-    {
-        id: '1400-lunch',
-        title: '2:00 PM - Luncheon',
-        description: 'Time for a delicious meal to recharge.',
-        options: ['Burma Burma', 'Taj Afternoon Tea'],
-    },
-    {
-        id: '1600-explore',
-        title: '4:00 PM - Explore the Town',
-        description: 'An afternoon adventure in the city.',
-        options: ['CSMT Heritage Tour', 'Kitab Khana + Colaba Stroll'],
-    },
-    {
-        id: '1800-drinks',
-        title: '6:00 PM - Sunset Drinks',
-        description: 'Let\'s watch the sunset with a drink in hand.',
-        options: ['AER', 'Asilo'],
-    },
-    {
-        id: 'stay',
-        title: '!! STAY !!',
-        description: 'We get to spend time late into the night, and then crash into our own separate rooms at the St. Regis for the night',
-        options: [
-            { text: 'Yes!', nextStageId: 'vibe' },
-            { text: 'No', nextStageId: 'vibe' }
-        ]
-    },
-    {
-        id: 'check-in',
-        title: 'Check-in',
-        description: 'Time to check in at the St. Regis.',
-        options: ['Let\'s check-in'],
-    },
-    {
-        id: 'vibe',
-        title: 'What\'s the Vibe?',
-        description: 'How are we feeling for dinner?',
-        options: ['Mush', 'Guarded'],
-    },
-    {
-        id: 'dinner',
-        title: '8:00 PM - Dinner',
-        description: 'The main event for the evening.',
-        getOptions: (history) => {
-            let baseOptions = ['By the Mekong', 'Masque'];
-            if (history['stay'] === 'Yes!' && history['vibe'] === 'Mush') {
-                baseOptions.push('In-Room Dining');
-            }
-            return baseOptions;
-        }
-    },
-    {
-        id: 'lounge',
-        title: '10:00 PM - After Dinner',
-        description: 'What should we do to wind down the night?',
-        options: ['Marine Drive', 'Find a cozy Lounge'],
-    },
-    {
-        id: 'long-night',
-        title: '11:00 PM - The Long Night',
-        description: 'Just spending some quality time together.',
-        options: ['Talk time', 'Music Time', 'Game Time']
-    },
-    {
-        id: 'day-break',
-        title: 'Day 2 - 7:00 AM',
-        description: 'Good morning! How should we start the day?',
-        options: ['Gym', 'Sleep-in']
-    },
-    {
-        id: 'brekkie',
-        title: 'Day 2 - 9:30 AM - Breakfast',
-        description: 'Time for the most important meal of the day.',
-        options: ['The NutCracker', 'Malabar Hill Elevated Nature Trail']
-    },
-    {
-        id: 'pick-a-place',
-        title: 'Day 2 - 11:00 AM',
-        description: 'One last stop.',
-        options: ['Siddhivinayak']
-    },
-    {
-        id: 'final-lunch',
-        title: 'Day 2 - 1:00 PM - Final Lunch',
-        description: 'One final meal to wrap up an amazing time.',
-        options: ['Kerala Cafe', 'Sardar']
-    },
-    {
-        id: 'goodbye',
-        title: '10:00 PM / 3:00 PM - Goodbye',
-        description: 'What a wonderful time! Thank you.',
+    {
+        id: '1100-meetup',
+        title: '11:00 AM - Meetup and Shop',
+        description: "Let's start the day by meeting up and doing a bit of shopping.",
+        options: ['Palladium', 'Phoenix Mills'],
+    },
+    {
+        id: '1400-lunch',
+        title: '2:00 PM - Luncheon',
+        description: 'Time for a delicious meal to recharge.',
+        options: ['Burma Burma', 'Taj Afternoon Tea'],
+    },
+    {
+        id: '1600-explore',
+        title: '4:00 PM - Explore the Town',
+        description: 'An afternoon adventure in the city.',
+        options: ['CSMT Heritage Tour', 'Kitab Khana + Colaba Stroll'],
+    },
+    {
+        id: '1800-drinks',
+        title: '6:00 PM - Sunset Drinks',
+        description: 'Let\'s watch the sunset with a drink in hand.',
+        options: ['AER', 'Asilo'],
+    },
+    {
+        id: 'stay',
+        title: '!! STAY !!',
+        description: 'We get to spend time late into the night, and then crash into our own separate rooms at the St. Regis for the night',
+        options: [
+            { text: 'Yes!', nextStageId: 'check-in' },
+            { text: 'No', nextStageId: 'goodnight' } // MODIFIED: "No" now leads to "goodnight"
+        ]
+    },
+    {
+        id: 'check-in',
+        title: 'Check-in',
+        description: 'Time to check in at the St. Regis.',
+        options: ['Let\'s check-in'],
+    },
+    {
+        id: 'vibe',
+        title: 'What\'s the Vibe?',
+        description: 'How are we feeling for dinner?',
+        options: [
+            { text: 'Mush', nextStageId: 'dinner' },
+            { text: 'Guarded', nextStageId: 'dinner' }
+        ],
+    },
+    {
+        id: 'dinner',
+        title: '8:00 PM - Dinner',
+        description: 'The main event for the evening.',
+        getOptions: (history) => {
+            let baseOptions = ['By the Mekong', 'Masque'];
+            if (history['stay'] === 'Yes!' && history['vibe'] === 'Mush') {
+                baseOptions.push('In-Room Dining');
+            }
+            return baseOptions;
+        }
+    },
+    {
+        id: 'lounge',
+        title: '10:00 PM - After Dinner',
+        description: 'What should we do to wind down the night?',
+        options: ['Marine Drive', 'Find a cozy Lounge'],
+    },
+    {
+        id: 'long-night',
+        title: '11:00 PM - The Long Night',
+        description: 'Just spending some quality time together.',
+        options: ['Talk time', 'Music Time', 'Game Time']
+    },
+    {
+        id: 'day-break',
+        title: 'Day 2 - 7:00 AM',
+        description: 'Good morning! How should we start the day?',
+        options: ['Gym', 'Sleep-in']
+    },
+    {
+        id: 'brekkie',
+        title: 'Day 2 - 9:30 AM - Breakfast',
+        description: 'Time for the most important meal of the day.',
+        options: ['The NutCracker', 'Malabar Hill Elevated Nature Trail']
+    },
+    {
+        id: 'pick-a-place',
+        title: 'Day 2 - 11:00 AM',
+        description: 'One last stop.',
+        options: ['Siddhivinayak']
+    },
+    {
+        id: 'final-lunch',
+        title: 'Day 2 - 1:00 PM - Final Lunch',
+        description: 'One final meal to wrap up an amazing time.',
+        options: ['Kerala Cafe', 'Sardar']
+    },
+    {
+        id: 'goodbye',
+        title: '10:00 PM / 3:00 PM - Goodbye',
+        description: 'What a wonderful time! Thank you.',
+        options: ['Goodbye hugs'],
+        isEnd: true
+    },
+    { // NEW: A stage for the end of the night
+        id: 'goodnight',
+        title: 'Goodnight',
+        description: 'Thank you for the wonderful time. Have a safe journey home!',
         options: ['Goodbye hugs'],
         isEnd: true
     }
@@ -110,7 +120,6 @@ const itineraryList = document.getElementById('itinerary-list');
 
 let currentIndex = 0;
 let selectionHistory = {};
-// NEW: An array to store the user's path through the itinerary indices.
 let pathHistory = [0];
 
 
@@ -148,8 +157,6 @@ function renderCurrentStage() {
         container.appendChild(button);
     });
 
-    // NEW CODE STARTS HERE
-    // Create and append the user input field
     const inputContainer = document.createElement('div');
     const inputField = document.createElement('input');
     inputField.type = 'text';
@@ -157,7 +164,6 @@ function renderCurrentStage() {
     inputField.placeholder = 'Or, Dee recommends...';
     inputContainer.appendChild(inputField);
 
-    // Add an event listener to the input field
     inputField.addEventListener('keypress', (event) => {
         if (event.key === 'Enter' && inputField.value.trim() !== '') {
             handleSelection(stageData.id, inputField.value.trim());
@@ -165,13 +171,11 @@ function renderCurrentStage() {
     });
 
     container.appendChild(inputContainer);
-    // NEW CODE ENDS HERE
 
-    // MODIFIED: Create the 'Go Back' button if we're not on the very first step.
     if (pathHistory.length > 1) {
         const backButton = document.createElement('button');
         backButton.textContent = '← Go Back';
-        backButton.className = 'back-button'; // Use a different class for styling
+        backButton.className = 'back-button';
         backButton.onclick = () => goBack();
         container.appendChild(backButton);
     }
@@ -179,7 +183,6 @@ function renderCurrentStage() {
 
 
 function handleSelection(stageId, choice) {
-    // MODIFIED: The choice can now be a string from the input field
     const choiceText = typeof choice === 'object' ? choice.text : choice;
     selectionHistory[stageId] = choiceText;
 
@@ -197,10 +200,9 @@ function handleSelection(stageId, choice) {
     } else {
         nextIndex = currentIndex + 1;
     }
-    
+
     if (nextIndex !== -1) {
         currentIndex = nextIndex;
-        // NEW: Add the new stage's index to our path history.
         pathHistory.push(currentIndex);
     }
 
@@ -208,16 +210,14 @@ function handleSelection(stageId, choice) {
     renderCurrentStage();
 }
 
-// NEW: The robust goBack function that uses pathHistory.
-function goBack() {
-    if (pathHistory.length <= 1) return; // Can't go back from the start
 
-    // Remove the current stage from history
+function goBack() {
+    if (pathHistory.length <= 1) return;
+
     const currentStageIndex = pathHistory.pop();
     const currentStageId = itinerary[currentStageIndex].id;
-    delete selectionHistory[currentStageId]; // Clear the choice for the stage we're leaving
+    delete selectionHistory[currentStageId];
 
-    // Get the previous stage's index
     const previousStageIndex = pathHistory[pathHistory.length - 1];
     currentIndex = previousStageIndex;
 
@@ -228,13 +228,13 @@ function goBack() {
 
 function updateItineraryList() {
     itineraryList.innerHTML = '<h3>Your Selected Itinerary</h3>';
-    
+
     const selectedStageIds = new Set(Object.keys(selectionHistory));
-    
+
     if(currentIndex < itinerary.length) {
       selectedStageIds.add(itinerary[currentIndex].id);
     }
-    
+
     itinerary.forEach(stage => {
         if (selectedStageIds.has(stage.id)) {
             const choice = selectionHistory[stage.id];
@@ -258,7 +258,7 @@ function updateItineraryList() {
 function showFinalResult() {
     container.innerHTML = '';
     finalChoiceText.innerHTML = "<h1>🎉 Itinerary Complete!</h1><p>Here is your finalized plan:</p>";
-    
+
     const finalPlan = document.createElement('ul');
 
     for (const stageId in selectionHistory) {
@@ -270,9 +270,9 @@ function showFinalResult() {
             finalPlan.appendChild(listItem);
         }
     }
-    
+
     finalChoiceText.appendChild(finalPlan);
-    
+
     const resetButton = document.createElement('button');
     resetButton.textContent = 'Start Over';
     resetButton.className = 'reset-button';
@@ -286,7 +286,6 @@ function showFinalResult() {
 function resetPage() {
     currentIndex = 0;
     selectionHistory = {};
-    // MODIFIED: Reset the path history to the starting stage.
     pathHistory = [0];
     finalChoiceText.innerHTML = '';
     itineraryList.style.display = 'block';
@@ -295,22 +294,15 @@ function resetPage() {
     renderCurrentStage();
 }
 
-/**
- * Creates and appends a "Reset All Selections" button to the page.
- * This button will reset the entire itinerary and take the user back to the first event.
- */
 function addResetButton() {
     const resetButtonContainer = document.getElementById('reset-button-container');
     const resetButton = document.createElement('button');
     resetButton.textContent = 'Start Over';
-    resetButton.className = 'reset-button'; // A class for styling
+    resetButton.className = 'reset-button';
     resetButton.onclick = resetPage;
     resetButtonContainer.appendChild(resetButton);
 }
 
-// Call the initial render and list update
 renderCurrentStage();
 updateItineraryList();
-
-// Add the reset button when the page first loads
 addResetButton();
