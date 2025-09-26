@@ -154,7 +154,7 @@ function renderCurrentStage() {
     const inputField = document.createElement('input');
     inputField.type = 'text';
     inputField.id = 'user-input';
-    inputField.placeholder = 'Or, enter your own choice here...';
+    inputField.placeholder = 'Or, Dee recommends...';
     inputContainer.appendChild(inputField);
 
     // Add an event listener to the input field
@@ -302,7 +302,7 @@ function resetPage() {
 function addResetButton() {
     const resetButtonContainer = document.getElementById('reset-button-container');
     const resetButton = document.createElement('button');
-    resetButton.textContent = 'Reset All Selections';
+    resetButton.textContent = 'Start Over';
     resetButton.className = 'reset-button'; // A class for styling
     resetButton.onclick = resetPage;
     resetButtonContainer.appendChild(resetButton);
