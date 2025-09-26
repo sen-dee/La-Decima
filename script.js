@@ -45,7 +45,7 @@ const itinerary = [
     {
         id: 'vibe',
         title: 'What\'s the Vibe?',
-        description: 'How are we feeling for dinner?',
+        description: 'How are we feeling?',
         options: ['Mush', 'Guarded'],
     },
     {
