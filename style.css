@@ -1,67 +1,190 @@
+/* --- General Body & Background --- */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    
-    /* --- UPDATED FOR BACKGROUND IMAGE --- */
-    background-image: url('background.jpg'); /* 🌟 CHANGE 'background.jpg' to your image file name! 🌟 */
-    background-size: cover;                  /* Ensures image covers the entire viewport */
-    background-attachment: fixed;            /* Keeps image fixed when scrolling */
-    background-color: #f8f8ff;               /* Light, calm fallback background color */
-    /* ------------------------------------ */
-    
+    background-image: url('background.jpg'); /* Make sure your image file is in the same folder */
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center; /* Center the background image */
+    background-color: #f8f8ff; /* Light, calm fallback background color */
     color: #333;
-    text-align: center;
+    margin: 0;
     padding: 20px;
+}
+
+/* --- Main Header --- */
+header {
+    margin-bottom: 40px;
+    color: #e91e63;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1); /* Soft shadow for the main title */
 }
 
 /* --- Layout Container for Side-by-Side View --- */
 #app-wrapper {
     display: flex;
-    justify-content: center; /* Center the whole content block */
-    gap: 30px; /* Space between the two columns */
-    max-width: 1200px; /* Limit overall width */
+    justify-content: center;
+    align-items: flex-start; /* Aligns items to the top */
+    gap: 30px;
+    max-width: 1200px;
     margin: 0 auto;
-    text-align: left; /* Reset text alignment for content inside */
 }
 
-header {
-    margin-bottom: 40px;
-    color: #e91e63; /* Pink header */
-    text-align: center;
-}
-
-/* --- Main Selection Area (Left Column) --- */
-#chooser-app {
-    flex-grow: 2; /* Takes up more space than the list */
-    max-width: 700px; /* Max width for the main content */
-    background-color: #fff;
+/* --- Card Style (Shared by main app and list) --- */
+.card {
+    background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent background */
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px); /* Adds a "frosted glass" effect if there's a background image */
+    -webkit-backdrop-filter: blur(5px);
 }
 
-#chooser-app h2 { /* Targeting the stage title */
+
+/* --- Main Selection Area (Left Column) --- */
+#chooser-app {
+    flex-basis: 65%; /* Define the base width */
+}
+
+#chooser-app h2 {
     color: #4a4a4a;
-    margin-bottom: 25px;
+    margin-top: 0;
+    margin-bottom: 10px;
     text-align: center;
     font-size: 1.6em;
 }
 
-/* ---------------------------------------------------- */
-/* --- Itinerary List Area (Right Column - ESSENTIAL) --- */
-/* ---------------------------------------------------- */
+/* NEW: Style for the event description text */
+.event-description {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+/* --- Itinerary List Area (Right Column) --- */
 #itinerary-list {
-    flex-grow: 1;
-    max-width: 350px;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border: 2px solid #ffb6c1; /* Light pink border to highlight */
-    align-self: flex-start; /* Stick to the top of the wrapper */
-    position: sticky; /* Keep the list visible as the user scrolls */
+    flex-basis: 35%;
+    align-self: flex-start;
+    position: sticky;
     top: 20px;
+    border: 1px solid #ffdde1; /* Softer pink border */
 }
 
 #itinerary-list h3 {
     color: #e91e63;
-    margin-top: 0
+    margin-top: 0;
+    text-align: center;
+}
+
+/* NEW: Styling for the list itself */
+#itinerary-list ul {
+    list-style-type: none; /* Remove default bullets */
+    padding-left: 0;
+}
+
+#itinerary-list li {
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0; /* Separator line */
+}
+
+#itinerary-list li:last-child {
+    border-bottom: none; /* Remove line from last item */
+}
+
+#itinerary-list strong {
+    color: #d81b60; /* Darker pink for emphasis */
+}
+
+/* --- Button Styles --- */
+.choice-button, .reset-button {
+    display: block;
+    width: 100%;
+    padding: 15px 20px;
+    margin: 8px 0; /* Vertical spacing between buttons */
+    border: 2px solid #ffb6c1; /* Light Pink */
+    background-color: #fff;
+    color: #e91e63;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
+}
+
+.choice-button:hover {
+    background-color: #e91e63;
+    color: #fff;
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Style for the button that was selected */
+.choice-button.selected {
+    background-color: #e91e63;
+    color: #fff;
+    border-color: #e91e63;
+}
+
+.reset-button {
+    background-color: #555;
+    color: #fff;
+    border-color: #555;
+    margin-top: 20px;
+}
+
+.reset-button:hover {
+    background-color: #333;
+    border-color: #333;
+}
+
+/* --- Final Result Screen --- */
+#final-choice {
+    text-align: center;
+}
+
+#final-choice h1 {
+    color: #e91e63;
+}
+
+#final-choice ul {
+    list-style-type: none;
+    padding-left: 0;
+    text-align: left;
+    margin: 30px 0;
+}
+
+#final-choice li {
+    padding: 12px;
+    font-size: 1.1em;
+    border-bottom: 1px solid #eee;
+}
+
+/* -------------------------------------- */
+/* --- Responsive Design for Mobile --- */
+/* -------------------------------------- */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    #app-wrapper {
+        flex-direction: column; /* Stack columns vertically */
+        gap: 20px;
+    }
+
+    /* Make both columns take full width on small screens */
+    #chooser-app, #itinerary-list {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+
+    #itinerary-list {
+        position: static; /* Unstick the list on mobile */
+        order: -1; /* NEW: Display the summary list *before* the choices on mobile */
+    }
+}
