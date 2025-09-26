@@ -24,45 +24,39 @@ const itinerary = [
         description: 'Let\'s watch the sunset with a drink in hand.',
         options: ['AER', 'Asilo'],
     },
-    // NEW: Conditional "STAY!" event that branches the itinerary.
     {
         id: 'stay',
         title: 'Continue the Night?',
         description: 'Do we want to check into the St. Regis for the night?',
         options: [
-            { text: 'Yes, let\'s stay!', nextStageId: 'check-in' }, // Jumps to 'check-in'
-            { text: 'No, let\'s wrap up after dinner.', nextStageId: 'dinner' } // Jumps to 'dinner'
+            { text: 'Yes, let\'s stay!', nextStageId: 'check-in' },
+            { text: 'No, let\'s wrap up after dinner.', nextStageId: 'dinner' }
         ]
     },
-    // NEW: This stage only appears if the user chose "Yes" to stay.
     {
         id: 'check-in',
         title: 'Check-in',
         description: 'Time to check in at the St. Regis.',
         options: ['Let\'s check-in'],
     },
-    // NEW: Vibe check after checking in.
     {
         id: 'vibe',
         title: 'What\'s the Vibe?',
-        description: 'How are we feeling?',
+        description: 'How are we feeling for dinner?',
         options: ['Mush', 'Guarded'],
     },
     {
         id: 'dinner',
         title: '8:00 PM - Dinner',
         description: 'The main event for the evening.',
-        // MODIFIED: Options are now a function to allow for dynamic choices.
         getOptions: (history) => {
             let baseOptions = ['By the Mekong', 'Masque'];
-            // If we stayed AND the vibe is "Mush", add an "In-Room" dining option.
             if (history['stay'] === 'Yes, let\'s stay!' && history['vibe'] === 'Mush') {
                 baseOptions.push('In-Room Dining');
             }
             return baseOptions;
         }
     },
-    // NEW: This stage only appears if the user chose "Yes" to stay.
     {
         id: 'lounge',
         title: '10:00 PM - After Dinner',
@@ -99,13 +93,12 @@ const itinerary = [
         description: 'One final meal to wrap up an amazing time.',
         options: ['Kerala Cafe', 'Sardar']
     },
-    // NEW: The "Goodbye" stage, which can be an endpoint.
     {
         id: 'goodbye',
         title: '10:00 PM / 3:00 PM - Goodbye',
         description: 'What a wonderful time! Thank you.',
         options: ['Goodbye hugs'],
-        isEnd: true // NEW: A flag to mark this as a final state.
+        isEnd: true
     }
 ];
 
@@ -117,8 +110,10 @@ const itineraryList = document.getElementById('itinerary-list');
 
 let currentIndex = 0;
 let selectionHistory = {};
+// NEW: An array to store the user's path through the itinerary indices.
+let pathHistory = [0]; 
 
-// MODIFIED: This function is now more powerful.
+
 function renderCurrentStage() {
     if (currentIndex < 0 || currentIndex >= itinerary.length) {
         showFinalResult();
@@ -128,7 +123,6 @@ function renderCurrentStage() {
     const stageData = itinerary[currentIndex];
     container.innerHTML = `<h2>${stageData.title}</h2>`;
 
-    // NEW: Add the description text below the title.
     if (stageData.description) {
         const descriptionEl = document.createElement('p');
         descriptionEl.textContent = stageData.description;
@@ -136,14 +130,12 @@ function renderCurrentStage() {
         container.appendChild(descriptionEl);
     }
 
-    // MODIFIED: Handle both simple string options and dynamic/conditional options.
     const options = typeof stageData.options === 'function' 
         ? stageData.getOptions(selectionHistory) 
         : stageData.options;
 
     options.forEach(option => {
         const button = document.createElement('button');
-        // MODIFIED: An option can be a string or an object with text.
         const buttonText = typeof option === 'object' ? option.text : option;
         button.textContent = buttonText;
         button.className = 'choice-button';
@@ -156,58 +148,74 @@ function renderCurrentStage() {
         container.appendChild(button);
     });
 
-    // We don't need a back button for this conditional logic model for now,
-    // as going back would be complex. It can be added later if needed.
+    // MODIFIED: Create the 'Go Back' button if we're not on the very first step.
+    if (pathHistory.length > 1) {
+        const backButton = document.createElement('button');
+        backButton.textContent = '← Go Back';
+        backButton.className = 'back-button'; // Use a different class for styling
+        backButton.onclick = () => goBack();
+        container.appendChild(backButton);
+    }
 }
 
 
-// MODIFIED: This function now handles branching logic.
 function handleSelection(stageId, choice) {
     const choiceText = typeof choice === 'object' ? choice.text : choice;
     selectionHistory[stageId] = choiceText;
 
     const stageData = itinerary.find(stage => stage.id === stageId);
 
-    // If the current stage is a final one, end the itinerary.
     if (stageData.isEnd) {
         showFinalResult();
         updateItineraryList();
         return;
     }
 
-    // If the chosen option has a "nextStageId", we jump to that stage.
+    let nextIndex;
     if (typeof choice === 'object' && choice.nextStageId) {
-        const nextIndex = itinerary.findIndex(stage => stage.id === choice.nextStageId);
-        if (nextIndex !== -1) {
-            currentIndex = nextIndex;
-        } else {
-            // Fallback: if we can't find the stage, just go to the next one.
-            currentIndex++;
-        }
+        nextIndex = itinerary.findIndex(stage => stage.id === choice.nextStageId);
     } else {
-        // Otherwise, just go to the next stage in the array.
-        currentIndex++;
+        nextIndex = currentIndex + 1;
+    }
+    
+    if (nextIndex !== -1) {
+        currentIndex = nextIndex;
+        // NEW: Add the new stage's index to our path history.
+        pathHistory.push(currentIndex);
     }
 
     updateItineraryList();
     renderCurrentStage();
 }
 
+// NEW: The robust goBack function that uses pathHistory.
+function goBack() {
+    if (pathHistory.length <= 1) return; // Can't go back from the start
 
-// This function is largely the same but now iterates through the more complex data.
+    // Remove the current stage from history
+    const currentStageIndex = pathHistory.pop();
+    const currentStageId = itinerary[currentStageIndex].id;
+    delete selectionHistory[currentStageId]; // Clear the choice for the stage we're leaving
+
+    // Get the previous stage's index
+    const previousStageIndex = pathHistory[pathHistory.length - 1];
+    currentIndex = previousStageIndex;
+
+    updateItineraryList();
+    renderCurrentStage();
+}
+
+
 function updateItineraryList() {
     itineraryList.innerHTML = '<h3>Your Selected Itinerary</h3>';
     
-    // Create a set of all stages that have been selected so far.
     const selectedStageIds = new Set(Object.keys(selectionHistory));
     
-    // Also include the current stage to show it's awaiting selection.
     if(currentIndex < itinerary.length) {
       selectedStageIds.add(itinerary[currentIndex].id);
     }
     
     itinerary.forEach(stage => {
-        // Only display stages that are part of the user's path.
         if (selectedStageIds.has(stage.id)) {
             const choice = selectionHistory[stage.id];
             const listItem = document.createElement('li');
@@ -232,7 +240,7 @@ function showFinalResult() {
     finalChoiceText.innerHTML = "<h1>🎉 Itinerary Complete!</h1><p>Here is your finalized plan:</p>";
     
     const finalPlan = document.createElement('ul');
-    // We iterate through history to show the choices in the order they were made.
+
     for (const stageId in selectionHistory) {
         const stage = itinerary.find(s => s.id === stageId);
         const choice = selectionHistory[stageId];
@@ -256,9 +264,10 @@ function showFinalResult() {
 
 
 function resetPage() {
-    // MODIFIED: Find the index of the very first stage to reset correctly.
     currentIndex = 0;
     selectionHistory = {};
+    // MODIFIED: Reset the path history to the starting stage.
+    pathHistory = [0]; 
     finalChoiceText.innerHTML = '';
     itineraryList.style.display = 'block';
 
