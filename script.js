@@ -3,7 +3,7 @@ const itinerary = [
         id: '1100-meetup',
         title: '11:00 AM - Meetup and Shop',
         description: "Let's start the day by meeting up and doing a bit of shopping.",
-        options: ['Palladium', 'Phoenix Mills'],
+        options: ['Palladium'],
     },
     {
         id: '1400-lunch',
@@ -150,7 +150,7 @@ function renderCurrentStage() {
     const inputField = document.createElement('input');
     inputField.type = 'text';
     inputField.id = 'user-input';
-    inputField.placeholder = 'Or, Dee recommends...';
+    inputField.placeholder = 'or, Dee suggests...';
     inputContainer.appendChild(inputField);
 
     inputField.addEventListener('keypress', (event) => {
@@ -163,7 +163,7 @@ function renderCurrentStage() {
 
     if (pathHistory.length > 1) {
         const backButton = document.createElement('button');
-        backButton.textContent = '← Go Back';
+        backButton.textContent = '← Previous Choice';
         backButton.className = 'back-button';
         backButton.onclick = () => goBack();
         container.appendChild(backButton);
@@ -223,7 +223,7 @@ function goBack() {
 
 
 function updateItineraryList() {
-    itineraryList.innerHTML = '<h3>Your Selected Itinerary</h3>';
+    itineraryList.innerHTML = '<h3>Your Selected Choices</h3>';
 
     // Use the pathHistory to build the list in the correct order
     const uniqueStageIndices = [...new Set(pathHistory)];
@@ -244,7 +244,7 @@ function updateItineraryList() {
     });
 
     if (Object.keys(selectionHistory).length === 0) {
-        itineraryList.innerHTML = '<h3>Your Selected Itinerary</h3><p>Start your selections below!</p>';
+        itineraryList.innerHTML = '<h3>Your Selected Choices</h3><p>Start your selections below!</p>';
     }
 }
 
@@ -253,7 +253,7 @@ function showFinalResult() {
     container.style.display = 'none'; // Hide the options container
     resultContainer.classList.remove('hidden'); // Show the results container
     
-    finalChoiceText.innerHTML = "<h1>🎉 Itinerary Complete!</h1><p>Here is your finalized plan:</p>";
+    finalChoiceText.innerHTML = "<h1>🎉 Choices Complete!</h1><p>Here is your finalized plan:</p>";
     const finalPlan = document.createElement('ul');
 
     // Use pathHistory to ensure the final list is in the correct order
