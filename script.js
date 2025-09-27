@@ -55,13 +55,13 @@ const itinerary = [
     },
     {
         id: 'long-night',
-        title: '11:00 PM - The Long Night',
+        title: 'The Long Night',
         description: 'Just spending some quality time together.',
         options: ['Talk time', 'Music Time', 'Game Time']
     },
     {
         id: 'day-break',
-        title: 'Day 2 - 7:00 AM',
+        title: 'The Morning After',
         description: 'Good morning! How should we start the day?',
         options: ['Gym', 'Sleep-in']
     },
@@ -85,7 +85,7 @@ const itinerary = [
     },
     {
         id: 'goodbye',
-        title: '10:00 PM / 3:00 PM - Goodbye',
+        title: 'Goodbye',
         description: 'What a wonderful time! Thank you.',
         options: ['Goodbye hugs'],
         isEnd: true
@@ -93,7 +93,7 @@ const itinerary = [
     {
         id: 'goodnight',
         title: 'Goodnight',
-        description: 'Thank you for the wonderful time. Have a safe journey home!',
+        description: 'Thank you for the wonderful time. Can\'t wait to see you tomorrow!',
         options: ['Goodbye hugs'],
         isEnd: true
     }
@@ -253,7 +253,7 @@ function showFinalResult() {
     container.style.display = 'none'; // Hide the options container
     resultContainer.classList.remove('hidden'); // Show the results container
     
-    finalChoiceText.innerHTML = "<h1>🎉 Choices Complete!</h1><p>Here is your finalized plan:</p>";
+    finalChoiceText.innerHTML = "<h1>💜 Choices Complete 💜</h1><p>Here is your finalized plan:</p>";
     const finalPlan = document.createElement('ul');
 
     // Use pathHistory to ensure the final list is in the correct order
