@@ -1,25 +1,25 @@
 const itinerary = [
     {
         id: '1100-meetup',
-        title: '11:00 AM - Meetup and Shop',
+        title: 'Meetup and Shop',
         description: "Let's start the day by meeting up and doing a bit of shopping.",
         options: ['Palladium'],
     },
     {
         id: '1400-lunch',
-        title: '2:00 PM - Lunch',
+        title: 'Lunch',
         description: 'Time for a delicious meal to recharge.',
         options: ['Burma Burma', 'Taj Afternoon Tea'],
     },
     {
         id: '1600-explore',
-        title: '4:00 PM - Explore the Town',
+        title: 'Wander the Streets',
         description: 'An afternoon adventure in the city.',
         options: ['CSMT Heritage Tour', 'Kitab Khana + Colaba Stroll'],
     },
     {
         id: '1800-drinks',
-        title: '6:00 PM - Sunset Views',
+        title: 'Sunset Views',
         description: "Let's catch the sunset with a drink in hand.",
         options: ['AER', 'Asilo'],
     },
@@ -31,13 +31,13 @@ const itinerary = [
     },
     {
         id: 'vibe',
-        title: "What's the Vibe?",
+        title: "Vibe Check",
         description: 'How are we feeling for dinner?',
         options: ['Mush', 'Guarded'],
     },
     {
         id: 'dinner',
-        title: '8:00 PM - Dinner',
+        title: 'Dinner',
         description: 'The main event for the evening.',
         getOptions: (history) => {
             let baseOptions = ['By the Mekong', 'Masque'];
@@ -49,7 +49,7 @@ const itinerary = [
     },
     {
         id: 'lounge',
-        title: '10:00 PM - After Dinner',
+        title: 'The Night is still Young',
         description: 'What should we do to wind down the night?',
         options: ['Marine Drive', 'Find a cozy Lounge'],
     },
@@ -67,19 +67,19 @@ const itinerary = [
     },
     {
         id: 'brekkie',
-        title: 'Day 2 - 9:30 AM - Breakfast',
+        title: 'Chai for the Morning after',
         description: 'Time for the most important meal of the day.',
         options: ['The NutCracker', 'Malabar Hill Elevated Nature Trail']
     },
     {
         id: 'pick-a-place',
-        title: 'Day 2 - 11:00 AM',
+        title: 'Open Time',
         description: 'One last stop.',
         options: ['Siddhivinayak']
     },
     {
         id: 'final-lunch',
-        title: 'Day 2 - 1:00 PM - Final Lunch',
+        title: 'The Last Stop',
         description: 'One final meal to wrap up an amazing time.',
         options: ['Kerala Cafe', 'Sardar']
     },
