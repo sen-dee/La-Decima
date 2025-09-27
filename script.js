@@ -7,7 +7,7 @@ const itinerary = [
     },
     {
         id: '1400-lunch',
-        title: '2:00 PM - Luncheon',
+        title: '2:00 PM - Lunch',
         description: 'Time for a delicious meal to recharge.',
         options: ['Burma Burma', 'Taj Afternoon Tea'],
     },
@@ -19,8 +19,8 @@ const itinerary = [
     },
     {
         id: '1800-drinks',
-        title: '6:00 PM - Sunset Drinks',
-        description: "Let's watch the sunset with a drink in hand.",
+        title: '6:00 PM - Sunset Views',
+        description: "Let's catch the sunset with a drink in hand.",
         options: ['AER', 'Asilo'],
     },
     {
