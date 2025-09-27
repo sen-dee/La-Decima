@@ -218,3 +218,93 @@ function goBack() {
     currentIndex = previousStageIndex;
 
     updateItineraryList();
+    renderCurrentStage();
+}
+
+
+function updateItineraryList() {
+    itineraryList.innerHTML = '<h3>Your Selected Itinerary</h3>';
+
+    // Use the pathHistory to build the list in the correct order
+    const uniqueStageIndices = [...new Set(pathHistory)];
+
+    uniqueStageIndices.forEach(stageIndex => {
+        const stage = itinerary[stageIndex];
+        if (stage) {
+            const choice = selectionHistory[stage.id];
+            const listItem = document.createElement('li');
+
+            if (choice) {
+                listItem.innerHTML = `<strong>${stage.title}:</strong> ${choice}`;
+            } else {
+                listItem.innerHTML = `<strong>${stage.title}:</strong> <em style="color:#aaa;">(Awaiting Selection)</em>`;
+            }
+            itineraryList.appendChild(listItem);
+        }
+    });
+
+    if (Object.keys(selectionHistory).length === 0) {
+        itineraryList.innerHTML = '<h3>Your Selected Itinerary</h3><p>Start your selections below!</p>';
+    }
+}
+
+
+function showFinalResult() {
+    container.style.display = 'none'; // Hide the options container
+    resultContainer.classList.remove('hidden'); // Show the results container
+    
+    finalChoiceText.innerHTML = "<h1>🎉 Itinerary Complete!</h1><p>Here is your finalized plan:</p>";
+    const finalPlan = document.createElement('ul');
+
+    // Use pathHistory to ensure the final list is in the correct order
+    const finalPath = [...new Set(pathHistory.map(index => itinerary[index].id))];
+    finalPath.forEach(stageId => {
+        const stage = itinerary.find(s => s.id === stageId);
+        const choice = selectionHistory[stageId];
+        if (stage && choice && !stage.isEnd) { // Don't show the "goodbye" choice
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `<strong>${stage.title}:</strong> ${choice}`;
+            finalPlan.appendChild(listItem);
+        }
+    });
+
+    finalChoiceText.appendChild(finalPlan);
+
+    const resetButton = document.createElement('button');
+    resetButton.textContent = 'Start Over';
+    resetButton.className = 'reset-button';
+    resetButton.onclick = resetPage;
+    finalChoiceText.appendChild(resetButton);
+
+    itineraryList.style.display = 'none';
+}
+
+
+function resetPage() {
+    currentIndex = 0;
+    selectionHistory = {};
+    pathHistory = [0];
+    
+    finalChoiceText.innerHTML = '';
+    resultContainer.classList.add('hidden');
+    container.style.display = 'block';
+    itineraryList.style.display = 'block';
+
+    updateItineraryList();
+    renderCurrentStage();
+}
+
+function addResetButton() {
+    const resetButtonContainer = document.getElementById('reset-button-container');
+    resetButtonContainer.innerHTML = ''; // Clear previous button if any
+    const resetButton = document.createElement('button');
+    resetButton.textContent = 'Start Over From Scratch';
+    resetButton.className = 'reset-button';
+    resetButton.onclick = resetPage;
+    resetButtonContainer.appendChild(resetButton);
+}
+
+// Initial setup
+renderCurrentStage();
+updateItineraryList();
+addResetButton();
