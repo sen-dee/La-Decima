@@ -1,4 +1,8 @@
 /* --- General Body & Background --- */
+:root {
+  --royal-purple: #6a0dad; /* Define the main text color here */
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-image: url('background.jpeg'); /* Make sure your image file is in the same folder */
@@ -6,7 +10,7 @@ body {
     background-attachment: fixed;
     background-position: center; /* Center the background image */
     background-color: #f8f8ff; /* Light, calm fallback background color */
-    color: #333;
+    color: var(--royal-purple); /* CHANGED: Default text color */
     margin: 0;
     padding: 0;
     
@@ -21,7 +25,7 @@ body {
 /* --- Main Header --- */
 header {
     width: 100%; /* MODIFIED: Ensure header takes full width */
-    color: #e91e63;
+    color: var(--royal-purple); /* CHANGED */
     text-align: center;
     margin-bottom: 20px; /* Add some space below the header */
 }
@@ -58,7 +62,7 @@ header h1 {
 }
 
 #chooser-app h2 {
-    color: #4a4a4a;
+    color: var(--royal-purple); /* CHANGED */
     margin-top: 0;
     margin-bottom: 10px;
     text-align: center;
@@ -67,7 +71,7 @@ header h1 {
 
 .event-description {
     font-style: italic;
-    color: #555;
+    color: var(--royal-purple); /* CHANGED */
     margin-bottom: 25px;
     text-align: center;
     font-size: 1.1em;
@@ -79,11 +83,11 @@ header h1 {
     align-self: flex-start;
     position: sticky;
     top: 20px;
-    border: 1px solid #ffdde1; /* Softer pink border */
+    border: 1px solid #dcd0ff; /* Softer purple border */
 }
 
 #itinerary-list h3 {
-    color: #e91e63;
+    color: var(--royal-purple); /* CHANGED */
     margin-top: 0;
     text-align: center;
 }
@@ -103,43 +107,59 @@ header h1 {
 }
 
 #itinerary-list strong {
-    color: #d81b60; /* Darker pink for emphasis */
+    color: var(--royal-purple); /* CHANGED */
 }
 
-/* --- Button Styles --- */
-.choice-button, .reset-button {
+/* --- UNIFIED Button and Input Styles --- */
+.choice-button, #user-input {
     display: block;
     width: 100%;
     padding: 15px 20px;
-    margin: 15px 0;
-    border: 2px solid #ffb6c1; /* Light Pink */
+    margin: 15px 0; /* Changed from 'auto' for input to be consistent */
+    border: 2px solid var(--royal-purple); /* CHANGED */
     background-color: #fff;
-    color: #e91e63;
+    color: var(--royal-purple); /* CHANGED */
     border-radius: 10px;
     font-size: 1.1em;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
+    transition: all 0.2s ease-in-out;
+    box-sizing: border-box; /* Ensures padding doesn't affect total width */
+    text-align: center; /* Center text in buttons and input placeholder */
+}
+
+/* Style placeholder text separately */
+#user-input::placeholder {
+  color: var(--royal-purple);
+  opacity: 0.7; /* Make placeholder slightly lighter */
 }
 
 .choice-button:hover {
-    background-color: #e91e63;
+    background-color: var(--royal-purple); /* CHANGED */
     color: #fff;
     transform: translateY(-2px); /* Slight lift on hover */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .choice-button.selected {
-    background-color: #e91e63;
+    background-color: var(--royal-purple); /* CHANGED */
     color: #fff;
-    border-color: #e91e63;
+    border-color: var(--royal-purple); /* CHANGED */
 }
 
 .reset-button {
+    display: block;
+    width: 100%;
+    padding: 15px 20px;
+    margin: 15px 0;
     background-color: #555;
     color: #fff;
-    border-color: #555;
-    margin-top: 20px;
+    border: 2px solid #555;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
 .reset-button:hover {
@@ -147,16 +167,6 @@ header h1 {
     border-color: #333;
 }
 
-#user-input {
-    display: block;
-    width: 95%; /* Adjust width as needed */
-    padding: 15px 20px;
-    margin: 15px auto; /* Centered with vertical spacing */
-    border: 2px solid #ffb6c1;
-    border-radius: 10px;
-    font-size: 1.1em;
-    box-sizing: border-box; /* Ensures padding doesn't affect total width */
-}
 
 /* --- Final Result Screen --- */
 #final-choice {
@@ -164,7 +174,7 @@ header h1 {
 }
 
 #final-choice h1 {
-    color: #e91e63;
+    color: var(--royal-purple); /* CHANGED */
 }
 
 #final-choice ul {
