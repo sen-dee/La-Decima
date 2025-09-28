@@ -223,7 +223,7 @@ function goBack() {
 
 
 function updateItineraryList() {
-    itineraryList.innerHTML = '<h3>Your Selected Choices</h3>';
+    itineraryList.innerHTML = '<h3>HP and Dee\'s Day Out</h3>';
 
     // Use the pathHistory to build the list in the correct order
     const uniqueStageIndices = [...new Set(pathHistory)];
@@ -253,7 +253,7 @@ function showFinalResult() {
     container.style.display = 'none'; // Hide the options container
     resultContainer.classList.remove('hidden'); // Show the results container
     
-    finalChoiceText.innerHTML = "<h1>💜 Choices Complete 💜</h1><p>Here is our plan:</p>";
+    finalChoiceText.innerHTML = "<h1>💜 Choices Complete 💜</h1><p>Here is the plan:</p>";
     const finalPlan = document.createElement('ul');
 
     // Use pathHistory to ensure the final list is in the correct order
@@ -298,7 +298,7 @@ function addResetButton() {
     const resetButtonContainer = document.getElementById('reset-button-container');
     resetButtonContainer.innerHTML = ''; // Clear previous button if any
     const resetButton = document.createElement('button');
-    resetButton.textContent = 'Start Over From Scratch';
+    resetButton.textContent = 'Start Over';
     resetButton.className = 'reset-button';
     resetButton.onclick = resetPage;
     resetButtonContainer.appendChild(resetButton);
