@@ -28,11 +28,18 @@
 
     <div id="reset-button-container"></div>  
 
-    <audio controls loop id="bg-music" style="width: 100%; margin-top: 20px;">
+    <audio controls loop autoplay id="bg-music" style="width: 100%; margin-top: 20px;">
         <source src="background.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
+    <script>
+      window.addEventListener('DOMContentLoaded', (event) => {
+        const audio = document.getElementById('bg-music');
+        audio.volume = 0.5; // Set volume to 50%
+      });
+    </script>
+    
     <script src="script.js"></script>
 </body>
 </html>
