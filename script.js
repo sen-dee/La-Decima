@@ -1,20 +1,20 @@
 const itinerary = [
     {
         id: '1100-meetup',
-        title: 'Meetup and Shop',
-        description: "Let's start the day by meeting up and doing a bit of shopping.",
+        title: 'Meetup / Shop',
+        description: "Let's start the day by meeting here. Will you take me shopping? This also serves as a central spot for most things we could choose to do.",
         options: ['Palladium'],
     },
     {
         id: '1400-lunch',
         title: 'Lunch',
-        description: 'Time for a delicious meal to recharge. I know we\'ve talked about Burma Burma a lot, but would you prefer going to Sea Lounge for their Afternoon Tea.',
+        description: 'Time for a delicious meal to recharge. I know we\'ve talked about Burma Burma a lot, but would you prefer going to Sea Lounge for their Afternoon Tea?',
         options: ['Burma Burma', 'Taj Afternoon Tea'],
     },
     {
         id: '1600-explore',
         title: 'Wander the Streets',
-        description: 'An adventure in the city... and if the metro work is still going on, it might also server as a trek',
+        description: 'An adventure in the city... and if the metro work is still going on, it might also serve as a trek',
         options: ['CSMT Heritage Tour', 'Kitab Khana + Colaba Stroll'],
     },
     {
@@ -26,7 +26,7 @@ const itinerary = [
     {
         id: 'stay',
         title: '!! STAY !!',
-        description: 'We get to spend time late into the night, and then crash into our own separate rooms at the St. Regis for the night',
+        description: 'So, I know how you feel about this, but I still want you to give it a thought. You will have your own separate room at St. Regis which hopefully puts you at ease. My intention is to maximize the time we have together, the last thing I want you is to feel rushed on a late night commute. Choosing Yes allows us to get plenty of time late into the night, crash into our own rooms to sleep, and then get back much earlier the next day.',
         options: ['Yes!', 'No']
     },
     {
@@ -38,11 +38,11 @@ const itinerary = [
     {
         id: 'dinner',
         title: 'Dinner',
-        description: 'It irks me that we have never had a proper dinner date. We have to fix this please. Read through about Masque before you choose',
+        description: 'It irks me that we have never had a proper dinner date. Can we fix this please? Read about Masque before you choose',
         getOptions: (history) => {
             let baseOptions = ['By the Mekong', 'Masque'];
             if (history['stay'] === 'Yes!' && history['vibe'] === 'Mush') {
-                baseOptions.push(' Private Candlelit table');
+                baseOptions.push('Private Candlelit table');
             }
             return baseOptions;
         }
@@ -56,7 +56,7 @@ const itinerary = [
     {
         id: 'long-night',
         title: 'The Long Night',
-        description: 'Just spending some quality time together.',
+        description: 'Spending some quality time like when we find the time for it on the opposite sides of screens... but this time face to face.',
         options: ['Talk time', 'Music Time', 'Game Time']
     },
     {
