@@ -253,7 +253,7 @@ function showFinalResult() {
     container.style.display = 'none'; // Hide the options container
     resultContainer.classList.remove('hidden'); // Show the results container
     
-    finalChoiceText.innerHTML = "<h1>💜 Choices Complete 💜</h1><p>Here is your finalized plan:</p>";
+    finalChoiceText.innerHTML = "<h1>💜 Choices Complete 💜</h1><p>Here is our plan:</p>";
     const finalPlan = document.createElement('ul');
 
     // Use pathHistory to ensure the final list is in the correct order
