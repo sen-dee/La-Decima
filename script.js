@@ -150,7 +150,7 @@ function renderCurrentStage() {
     const inputField = document.createElement('input');
     inputField.type = 'text';
     inputField.id = 'user-input';
-    inputField.placeholder = 'or, Dee suggests...';
+    inputField.placeholder = 'Instead, Dee suggests...';
     inputContainer.appendChild(inputField);
 
     inputField.addEventListener('keypress', (event) => {
