@@ -61,13 +61,13 @@ const itinerary = [
     },
     {
         id: 'day-break',
-        title: 'The Morning After',
+        title: 'Day-Break',
         description: 'Good morning! How should we start the day?',
         options: ['Gym', 'Sleep-in']
     },
     {
         id: 'brekkie',
-        title: 'Chai for the Morning after',
+        title: 'Morning Chai',
         description: 'Time for the most important meal of the day.',
         options: ['The NutCracker', 'Malabar Hill Elevated Nature Trail']
     },
