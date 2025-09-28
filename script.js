@@ -270,11 +270,11 @@ function showFinalResult() {
 
     finalChoiceText.appendChild(finalPlan);
 
-    const resetButton = document.createElement('button');
-    resetButton.textContent = 'Start Over';
-    resetButton.className = 'reset-button';
-    resetButton.onclick = resetPage;
-    finalChoiceText.appendChild(resetButton);
+  //  const resetButton = document.createElement('button');
+  //  resetButton.textContent = 'Start Over';
+   // resetButton.className = 'reset-button';
+   // resetButton.onclick = resetPage;
+  //  finalChoiceText.appendChild(resetButton);
 
     itineraryList.style.display = 'none';
 }
