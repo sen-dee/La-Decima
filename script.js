@@ -244,7 +244,7 @@ function updateItineraryList() {
     });
 
     if (Object.keys(selectionHistory).length === 0) {
-        itineraryList.innerHTML = '<h3>Your Selected Choices</h3><p>Start your selections below!</p>';
+        itineraryList.innerHTML = '<h3>HP\'s vetted list. DN\'s writes-in or Click!</p>';
     }
 }
 
