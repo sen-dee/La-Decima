@@ -8,13 +8,13 @@ const itinerary = [
     {
         id: '1400-lunch',
         title: 'Lunch',
-        description: 'Time for a delicious meal to recharge.',
+        description: 'Time for a delicious meal to recharge. I know we\'ve talked about Burma Burma a lot, but would you prefer going to Sea Lounge for their Afternoon Tea.',
         options: ['Burma Burma', 'Taj Afternoon Tea'],
     },
     {
         id: '1600-explore',
         title: 'Wander the Streets',
-        description: 'An afternoon adventure in the city.',
+        description: 'An adventure in the city... and if the metro work is still going on, it might also server as a trek',
         options: ['CSMT Heritage Tour', 'Kitab Khana + Colaba Stroll'],
     },
     {
@@ -38,11 +38,11 @@ const itinerary = [
     {
         id: 'dinner',
         title: 'Dinner',
-        description: 'The main event for the evening.',
+        description: 'It irks me that we have never had a proper dinner date. We have to fix this please. Read through about Masque before you choose',
         getOptions: (history) => {
             let baseOptions = ['By the Mekong', 'Masque'];
             if (history['stay'] === 'Yes!' && history['vibe'] === 'Mush') {
-                baseOptions.push('In-Room Dining');
+                baseOptions.push(' Private Candlelit table');
             }
             return baseOptions;
         }
@@ -51,7 +51,7 @@ const itinerary = [
         id: 'lounge',
         title: 'The Night is still Young',
         description: 'What should we do to wind down the night?',
-        options: ['Marine Drive', 'Find a cozy Lounge'],
+        options: ['Marine Drive', 'Take me dancing', 'Find a cozy lounge'],
     },
     {
         id: 'long-night',
@@ -62,7 +62,7 @@ const itinerary = [
     {
         id: 'day-break',
         title: 'Day-Break',
-        description: 'Good morning! How should we start the day?',
+        description: 'Good morning! Common, you know how we have talked about hitting the gym one day... here it is, at a top quality gym with views',
         options: ['Gym', 'Sleep-in']
     },
     {
@@ -80,8 +80,8 @@ const itinerary = [
     {
         id: 'final-lunch',
         title: 'The Last Stop',
-        description: 'One final meal to wrap up an amazing time.',
-        options: ['Kerala Cafe', 'Sardar']
+        description: 'One final meal to wrap up an amazing time. If we decided to go to Sea Lounge y\'day, maybe d',
+        options: ['Kerala Cafe', 'Burma Burma', 'Sardar']
     },
     {
         id: 'goodbye',
