@@ -15,7 +15,7 @@ const itinerary = [
         id: '1600-explore',
         title: 'Wander the Streets',
         description: 'An adventure in the city... and if the metro work is still going on, it might also serve as a trek',
-        options: ['CSMT Heritage Tour', 'Kitab Khana + Colaba Stroll'],
+        options: ['CSMT Heritage Tour (4PM)', 'Kitab Khana + Colaba Stroll'],
     },
     {
         id: '1800-drinks',
@@ -26,22 +26,29 @@ const itinerary = [
     {
         id: 'stay',
         title: '!! STAY !!',
-        description: 'So, I know how you feel about this, but I still want you to give it a thought. You will have your own separate room at St. Regis which hopefully puts you at ease. My intention is to maximize the time we have together, the last thing I want you is to feel rushed on a late night commute. Choosing Yes allows us to get plenty of time late into the night, crash into our own rooms to sleep, and then get back much earlier the next day.',
+        description: 'So, I know how you feel about this, but I still want you to give it a thought. You will have your own separate room at St. Regis which hopefully puts you at ease. My intention is to maximize the time we have together, without a late night commute. This allows us to get plenty of time late into the night, crash into our own rooms to sleep, and then get back much earlier the next day.',
         options: ['Yes!', 'No']
     },
+    /*
+     * The 'vibe-check' event has been commented out as requested.
+     * Its logic was used to determine if a 'Private Candlelit table'
+     * option should be shown for dinner.
     {
         id: 'vibe',
         title: "Vibe Check",
         description: 'How are we feeling for dinner?',
         options: ['Mush', 'Guarded'],
     },
+    */
     {
         id: 'dinner',
         title: 'Dinner',
         description: 'It irks me that we have never had a proper dinner date. Can we fix this please? Read about Masque before you choose',
         getOptions: (history) => {
             let baseOptions = ['By the Mekong', 'Masque'];
-            if (history['stay'] === 'Yes!' && history['vibe'] === 'Mush') {
+            // DEPENDENCY UPDATED: The check for 'vibe' has been removed.
+            // Now, the 'Private Candlelit table' option only depends on the 'stay' choice.
+            if (history['stay'] === 'Yes!') {
                 baseOptions.push('Private Candlelit table');
             }
             return baseOptions;
@@ -80,21 +87,18 @@ const itinerary = [
     {
         id: 'final-lunch',
         title: 'The Last Stop',
-        description: 'One final meal to wrap up an amazing time. If we decided to go to Sea Lounge y\'day, maybe d',
-        options: ['Kerala Cafe', 'Burma Burma', 'Sardar']
-    },
-    {
-        id: 'goodbye',
-        title: 'Goodbye',
-        description: 'What a wonderful time! Thank you.',
-        options: ['Goodbye hugs'],
+        description: 'One final meal to wrap up an amazing time. If we decided to go to Sea Lounge y\'day, we should go to Burma today',
+        options: ['Kerala Cafe', 'Burma Burma', 'Sardar'],
+        // This is now an end event.
         isEnd: true
     },
+    // The 'goodbye' event with the hugs option has been removed entirely.
     {
         id: 'goodnight',
         title: 'Goodnight',
         description: 'Thank you for the wonderful time. Can\'t wait to see you tomorrow!',
-        options: ['Goodbye hugs'],
+        // Options removed as this is now just an end screen for the shorter date path.
+        options: [],
         isEnd: true
     }
 ];
@@ -132,19 +136,22 @@ function renderCurrentStage() {
         ? stageData.getOptions(selectionHistory)
         : stageData.options;
 
-    options.forEach(option => {
-        const button = document.createElement('button');
-        const buttonText = typeof option === 'object' ? option.text : option;
-        button.textContent = buttonText;
-        button.className = 'choice-button';
-
-        if (selectionHistory[stageData.id] === buttonText) {
-            button.classList.add('selected');
-        }
-
-        button.onclick = () => handleSelection(stageData.id, option);
-        container.appendChild(button);
-    });
+    // If there are no options (like for the 'goodnight' screen), don't show buttons
+    if (options && options.length > 0) {
+        options.forEach(option => {
+            const button = document.createElement('button');
+            const buttonText = typeof option === 'object' ? option.text : option;
+            button.textContent = buttonText;
+            button.className = 'choice-button';
+    
+            if (selectionHistory[stageData.id] === buttonText) {
+                button.classList.add('selected');
+            }
+    
+            button.onclick = () => handleSelection(stageData.id, option);
+            container.appendChild(button);
+        });
+    }
 
     const inputContainer = document.createElement('div');
     const inputField = document.createElement('input');
@@ -210,11 +217,11 @@ function goBack() {
 
     pathHistory.pop(); // Remove the current stage from the path
     const previousStageIndex = pathHistory[pathHistory.length - 1];
-    
+   
     // Also remove the choice for the stage we are leaving
     const abandonedStageId = itinerary[currentIndex].id;
     delete selectionHistory[abandonedStageId];
-    
+   
     currentIndex = previousStageIndex;
 
     updateItineraryList();
@@ -244,7 +251,7 @@ function updateItineraryList() {
     });
 
     if (Object.keys(selectionHistory).length === 0) {
-        itineraryList.innerHTML = '<h3>HP\'s vetted list. DN\'s writes-in or Click!</p>';
+        itineraryList.innerHTML = '<h3>My ideas for our day. Add your magic touch</p>';
     }
 }
 
@@ -252,8 +259,8 @@ function updateItineraryList() {
 function showFinalResult() {
     container.style.display = 'none'; // Hide the options container
     resultContainer.classList.remove('hidden'); // Show the results container
-    
-    finalChoiceText.innerHTML = "<h1>💜 Choices Complete 💜</h1><p>Here is the plan:</p>";
+   
+    finalChoiceText.innerHTML = "<h1>💜 Choices Complete 💜</h1><p>Here is our day:</p>";
     const finalPlan = document.createElement('ul');
 
     // Use pathHistory to ensure the final list is in the correct order
@@ -270,11 +277,11 @@ function showFinalResult() {
 
     finalChoiceText.appendChild(finalPlan);
 
-  //  const resetButton = document.createElement('button');
-  //  resetButton.textContent = 'Start Over';
+ //  const resetButton = document.createElement('button');
+ //  resetButton.textContent = 'Start Over';
    // resetButton.className = 'reset-button';
    // resetButton.onclick = resetPage;
-  //  finalChoiceText.appendChild(resetButton);
+ //  finalChoiceText.appendChild(resetButton);
 
     itineraryList.style.display = 'none';
 }
@@ -284,7 +291,7 @@ function resetPage() {
     currentIndex = 0;
     selectionHistory = {};
     pathHistory = [0];
-    
+   
     finalChoiceText.innerHTML = '';
     resultContainer.classList.add('hidden');
     container.style.display = 'block';
