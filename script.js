@@ -26,8 +26,8 @@ const itinerary = [
     {
         id: 'stay',
         title: '!! STAY !!',
-        description: 'So, I know how you feel about this, but I still want you to give it a thought. You will have your own separate room at St. Regis which hopefully puts you at ease. My intention is to maximize the time we have together, without a late night commute. This allows us to get plenty of time late into the night, crash into our own rooms to sleep, and then get back much earlier the next day.',
-        options: ['Yes!', 'No']
+        description: 'I know how you feel about this, but I still want you to give it a thought. You will have your own separate room at St. Regis which hopefully puts you at ease. This maximizes the time we have together, without a late night commute. We will have plenty of time late into the night at the lounges here or in the mall, crash into our own rooms to sleep, and then meetup much earlier tomorrow.',
+        options: ['🐶Yes🐶', 'No']
     },
     /*
      * The 'vibe-check' event has been commented out as requested.
@@ -48,9 +48,9 @@ const itinerary = [
             let baseOptions = ['By the Mekong', 'Masque'];
             // DEPENDENCY UPDATED: The check for 'vibe' has been removed.
             // Now, the 'Private Candlelit table' option only depends on the 'stay' choice.
-            if (history['stay'] === 'Yes!') {
-                baseOptions.push('Private Candlelit table');
-            }
+            //if (history['stay'] === 'Yes!') {
+          //     baseOptions.push('Private Candlelit table');
+         //   }
             return baseOptions;
         }
     },
@@ -58,18 +58,18 @@ const itinerary = [
         id: 'lounge',
         title: 'The Night is still Young',
         description: 'What should we do to wind down the night?',
-        options: ['Marine Drive', 'Take me dancing', 'Find a cozy lounge'],
+        options: ['Marine Drive', 'Go dancing', 'Find a place to lounge'],
     },
     {
         id: 'long-night',
         title: 'The Long Night',
-        description: 'Spending some quality time like when we find the time for it on the opposite sides of screens... but this time face to face.',
-        options: ['Talk time', 'Music Time', 'Game Time']
+        description: 'Making some quality HP and Dee time in the same timezone face to face for once, instead of opposite sides of a phone.',
+        options: ['Talk/Music/Game time']
     },
     {
         id: 'day-break',
         title: 'Day-Break',
-        description: 'Good morning! Common, you know how we have talked about hitting the gym one day... here it is, at a top quality gym with views',
+        description: 'Good morning Dee! We\'ve talked about hitting the gym together one day... let\'s do this.',
         options: ['Gym', 'Sleep-in']
     },
     {
@@ -96,7 +96,7 @@ const itinerary = [
     {
         id: 'goodnight',
         title: 'Goodnight',
-        description: 'Thank you for the wonderful time. Can\'t wait to see you tomorrow!',
+        description: 'Can\'t wait to see you tomorrow!',
         // Options removed as this is now just an end screen for the shorter date path.
         options: [],
         isEnd: true
