@@ -206,18 +206,15 @@ function handleSelection(stageId, choice) {
         }
     } else if (stageId === 'dinner') {
         if (selectionHistory['stay'] === 'No') {
-            // MODIFICATION: Manually add the final steps to the history before showing results.
-            // 1. Add the current 'dinner' stage to the history.
             if (pathHistory[pathHistory.length - 1] !== currentIndex) {
                 pathHistory.push(currentIndex);
             }
-            // 2. Add the final 'goodnight' stage to the history.
             const goodnightIndex = itinerary.findIndex(stage => stage.id === 'goodnight');
             if (goodnightIndex !== -1) {
                 pathHistory.push(goodnightIndex);
             }
             showFinalResult();
-            return; // Exit the function to prevent further rendering.
+            return;
         } else {
             nextIndex = currentIndex + 1;
         }
@@ -301,18 +298,18 @@ function showFinalResult() {
         const stage = itinerary.find(s => s.id === stageId);
         const choice = selectionHistory[stageId];
         
-        // MODIFICATION: The condition is updated to include 'isEnd' stages in the final list.
         if (stage && (choice || stage.autoProceedDelay || stage.isEnd)) {
              const listItem = document.createElement('li');
+             
+             // MODIFICATION: The rendering for 'goodnight' now includes the description.
              if (stage.isEnd && stage.id === 'goodnight') {
-                // Special rendering for the 'goodnight' event.
-                listItem.innerHTML = `<strong>${stage.title}</strong>`;
+                listItem.innerHTML = `<strong>${stage.title}:</strong> ${stage.description}`;
              } else if (stage.autoProceedDelay) {
                 listItem.innerHTML = `<strong>${stage.title}</strong>: ${stage.description}`;
              } else if (choice) {
                 listItem.innerHTML = `<strong>${stage.title}:</strong> ${choice}`;
              }
-             // Only add the list item if it has content.
+             
              if (listItem.innerHTML) {
                 finalPlan.appendChild(listItem);
              }
