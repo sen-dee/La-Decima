@@ -29,13 +29,12 @@ const itinerary = [
         description: 'I know how you feel about this, but I still want you to give it a thought. You will have your own separate room at St. Regis which hopefully puts you at ease. This maximizes the time we have together, without a late night commute. We will have plenty of time late into the night at the lounges here or in the mall, crash into our own rooms to sleep, and then meetup much earlier tomorrow.',
         options: ['🐶Yes🐶', 'No']
     },
-    // MODIFICATION: A new event object added to display the message in the event flow.
     {
         id: 'thank-you',
         title: 'A Quick Note',
         description: 'thanks, it means so much',
-        options: [], // No options for the user to choose.
-        autoProceedDelay: 2500 // Automatically moves to the next event after 2.5 seconds.
+        options: [],
+        autoProceedDelay: 2500
     },
     {
         id: 'dinner',
@@ -102,12 +101,11 @@ let currentIndex = 0;
 let selectionHistory = {};
 let pathHistory = [0];
 
-// MODIFICATION: New helper function to handle auto-proceeding events.
+
 function proceedToNextStage() {
     const nextIndex = currentIndex + 1;
     if (nextIndex < itinerary.length) {
         currentIndex = nextIndex;
-        // Ensure the auto-advanced stage is added to our path history.
         if (pathHistory[pathHistory.length - 1] !== currentIndex) {
             pathHistory.push(currentIndex);
         }
@@ -138,7 +136,6 @@ function renderCurrentStage() {
         ? stageData.getOptions(selectionHistory)
         : stageData.options;
     
-    // Only show buttons and input if it's NOT an auto-proceeding event.
     if (!stageData.autoProceedDelay) {
         if (options && options.length > 0) {
             options.forEach(option => {
@@ -179,7 +176,6 @@ function renderCurrentStage() {
         }
     }
 
-    // MODIFICATION: Check for the autoProceedDelay property to move automatically.
     if (stageData.autoProceedDelay && stageData.autoProceedDelay > 0) {
         setTimeout(proceedToNextStage, stageData.autoProceedDelay);
     }
@@ -200,10 +196,24 @@ function handleSelection(stageId, choice) {
 
     let nextIndex;
 
-    // MODIFICATION: The alert is removed. The logic now correctly proceeds to the next
-    // event in the array, which is either the 'thank-you' note or 'goodnight'.
-    if (stageId === 'stay' && choiceText === 'No') {
-        nextIndex = itinerary.findIndex(stage => stage.id === 'goodnight');
+    // --- MODIFICATION: LOGIC FOR 'STAY' AND 'DINNER' PATHS UPDATED ---
+
+    if (stageId === 'stay') {
+        if (choiceText === 'No') {
+            // If 'No', skip the 'thank-you' note and go straight to dinner.
+            nextIndex = itinerary.findIndex(stage => stage.id === 'dinner');
+        } else {
+            // If 'Yes', proceed to the next event in the array ('thank-you').
+            nextIndex = currentIndex + 1;
+        }
+    } else if (stageId === 'dinner') {
+        if (selectionHistory['stay'] === 'No') {
+            // If the original choice was 'No', end the night after dinner.
+            nextIndex = itinerary.findIndex(stage => stage.id === 'goodnight');
+        } else {
+            // Otherwise, continue with the rest of the night's events.
+            nextIndex = currentIndex + 1;
+        }
     } else if (typeof choice === 'object' && choice.nextStageId) {
         nextIndex = itinerary.findIndex(stage => stage.id === choice.nextStageId);
     } else {
@@ -225,10 +235,9 @@ function handleSelection(stageId, choice) {
 function goBack() {
     if (pathHistory.length <= 1) return;
 
-    // We might be going back from an auto-proceeding stage, so handle that.
     const currentStage = itinerary[currentIndex];
     if (currentStage.autoProceedDelay) {
-        pathHistory.pop(); // Pop the auto-stage
+        pathHistory.pop(); 
     }
 
     const currentStageId = itinerary[pathHistory[pathHistory.length - 1]].id;
@@ -256,7 +265,6 @@ function updateItineraryList() {
             const choice = selectionHistory[stage.id];
             const listItem = document.createElement('li');
 
-            // Don't show a choice for the auto-proceeding thank you note.
             if (stage.autoProceedDelay) {
                  listItem.innerHTML = `<strong>${stage.title}</strong>`;
             } else if (choice) {
@@ -280,16 +288,23 @@ function showFinalResult() {
     
     finalChoiceText.innerHTML = "<h1>💜 Choices Complete 💜</h1><p>Here is our day:</p>";
     const finalPlan = document.createElement('ul');
-    
-    for (const stageId in selectionHistory) {
+
+    const finalPath = [...new Set(pathHistory.map(index => itinerary[index].id))];
+    finalPath.forEach(stageId => {
         const stage = itinerary.find(s => s.id === stageId);
         const choice = selectionHistory[stageId];
-        if (stage && choice && !stage.isEnd) {
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `<strong>${stage.title}:</strong> ${choice}`;
-            finalPlan.appendChild(listItem);
+        
+        // Only show items with a choice, or special items like 'thank-you'
+        if (stage && (choice || stage.autoProceedDelay) && !stage.isEnd) {
+             const listItem = document.createElement('li');
+             if (stage.autoProceedDelay) {
+                listItem.innerHTML = `<strong>${stage.title}</strong>: ${stage.description}`;
+             } else {
+                listItem.innerHTML = `<strong>${stage.title}:</strong> ${choice}`;
+             }
+             finalPlan.appendChild(listItem);
         }
-    }
+    });
 
     finalChoiceText.appendChild(finalPlan);
     itineraryList.style.display = 'none';
