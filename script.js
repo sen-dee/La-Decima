@@ -29,28 +29,15 @@ const itinerary = [
         description: 'I know how you feel about this, but I still want you to give it a thought. You will have your own separate room at St. Regis which hopefully puts you at ease. This maximizes the time we have together, without a late night commute. We will have plenty of time late into the night at the lounges here or in the mall, crash into our own rooms to sleep, and then meetup much earlier tomorrow.',
         options: ['🐶Yes🐶', 'No']
     },
-    /*
-     * The 'vibe-check' event has been commented out as requested.
-     * Its logic was used to determine if a 'Private Candlelit table'
-     * option should be shown for dinner.
-    {
-        id: 'vibe',
-        title: "Vibe Check",
-        description: 'How are we feeling for dinner?',
-        options: ['Mush', 'Guarded'],
-    },
-    */
     {
         id: 'dinner',
         title: 'Dinner',
         description: 'It irks me that we have never had a proper dinner date. Can we fix this please? Read about Masque before you choose',
         getOptions: (history) => {
             let baseOptions = ['By the Mekong', 'Masque'];
-            // DEPENDENCY UPDATED: The check for 'vibe' has been removed.
-            // Now, the 'Private Candlelit table' option only depends on the 'stay' choice.
-            //if (history['stay'] === 'Yes!') {
-          //     baseOptions.push('Private Candlelit table');
-         //   }
+            if (history['stay'] === '🐶Yes🐶') {
+                baseOptions.push('Private Candlelit table');
+            }
             return baseOptions;
         }
     },
@@ -89,16 +76,13 @@ const itinerary = [
         title: 'The Last Stop',
         description: 'One final meal to wrap up an amazing time. If we decided to go to Sea Lounge y\'day, we should go to Burma today',
         options: ['Kerala Cafe', 'Burma Burma', 'Sardar'],
-        // This is now an end event.
         isEnd: true
     },
-    // The 'goodbye' event with the hugs option has been removed entirely.
     {
         id: 'goodnight',
         title: 'Goodnight',
         description: 'Can\'t wait to see you tomorrow!',
-        // Options removed as this is now just an end screen for the shorter date path.
-        options: [],
+        options: [], 
         isEnd: true
     }
 ];
@@ -130,13 +114,10 @@ function renderCurrentStage() {
         container.appendChild(descriptionEl);
     }
 
-    // --- BUG FIX IS HERE ---
-    // The check was changed from 'stageData.options' to 'stageData.getOptions'
     const options = typeof stageData.getOptions === 'function'
         ? stageData.getOptions(selectionHistory)
         : stageData.options;
 
-    // If there are no options (like for the 'goodnight' screen), don't show buttons
     if (options && options.length > 0) {
         options.forEach(option => {
             const button = document.createElement('button');
@@ -182,27 +163,34 @@ function handleSelection(stageId, choice) {
     const choiceText = typeof choice === 'object' ? choice.text : choice;
     selectionHistory[stageId] = choiceText;
 
-    const stageData = itinerary.find(stage => stage.id === stageId);
+    const currentStageData = itinerary.find(stage => stage.id === stageId);
 
-    if (stageData.isEnd) {
+    if (currentStageData.isEnd) {
         showFinalResult();
         updateItineraryList();
         return;
     }
 
     let nextIndex;
-    if (typeof choice === 'object' && choice.nextStageId) {
+
+    if (stageId === 'stay') {
+        if (choiceText === 'No') {
+            nextIndex = itinerary.findIndex(stage => stage.id === 'goodnight');
+        } else {
+            // MODIFICATION: Popup added here for the 'Yes' path.
+            alert("thanks, it means so much");
+            nextIndex = currentIndex + 1;
+        }
+    } else if (typeof choice === 'object' && choice.nextStageId) {
         nextIndex = itinerary.findIndex(stage => stage.id === choice.nextStageId);
-    } else if (stageId === 'dinner' && selectionHistory['stay'] === 'No') {
-        nextIndex = itinerary.findIndex(stage => stage.id === 'goodnight');
     } else {
         nextIndex = currentIndex + 1;
     }
 
+
     if (nextIndex !== -1) {
-        // Prevent adding duplicates to path history if user is just re-selecting
-        if (pathHistory[pathHistory.length - 1] !== nextIndex) {
-            pathHistory.push(nextIndex);
+        if (pathHistory[pathHistory.length - 1] !== currentIndex) {
+             pathHistory.push(currentIndex);
         }
         currentIndex = nextIndex;
     }
@@ -215,14 +203,14 @@ function handleSelection(stageId, choice) {
 function goBack() {
     if (pathHistory.length <= 1) return;
 
-    pathHistory.pop(); // Remove the current stage from the path
-    const previousStageIndex = pathHistory[pathHistory.length - 1];
-   
-    // Also remove the choice for the stage we are leaving
-    const abandonedStageId = itinerary[currentIndex].id;
-    delete selectionHistory[abandonedStageId];
-   
-    currentIndex = previousStageIndex;
+    const currentStageId = itinerary[currentIndex].id;
+    delete selectionHistory[currentStageId];
+
+    pathHistory.pop();
+    currentIndex = pathHistory[pathHistory.length - 1];
+    
+    const newCurrentStageId = itinerary[currentIndex].id;
+    delete selectionHistory[newCurrentStageId];
 
     updateItineraryList();
     renderCurrentStage();
@@ -232,7 +220,6 @@ function goBack() {
 function updateItineraryList() {
     itineraryList.innerHTML = '<h3>HP and Dee\'s Day Out</h3>';
 
-    // Use the pathHistory to build the list in the correct order
     const uniqueStageIndices = [...new Set(pathHistory)];
 
     uniqueStageIndices.forEach(stageIndex => {
@@ -251,38 +238,29 @@ function updateItineraryList() {
     });
 
     if (Object.keys(selectionHistory).length === 0) {
-        itineraryList.innerHTML = '<h3>My ideas for our day. Add your magic touch</p>';
+        itineraryList.innerHTML = '<h3>My ideas for our day. Add your magic touch</h3>';
     }
 }
 
 
 function showFinalResult() {
-    container.style.display = 'none'; // Hide the options container
-    resultContainer.classList.remove('hidden'); // Show the results container
-   
+    container.style.display = 'none';
+    resultContainer.classList.remove('hidden');
+    
     finalChoiceText.innerHTML = "<h1>💜 Choices Complete 💜</h1><p>Here is our day:</p>";
     const finalPlan = document.createElement('ul');
-
-    // Use pathHistory to ensure the final list is in the correct order
-    const finalPath = [...new Set(pathHistory.map(index => itinerary[index].id))];
-    finalPath.forEach(stageId => {
+    
+    for (const stageId in selectionHistory) {
         const stage = itinerary.find(s => s.id === stageId);
         const choice = selectionHistory[stageId];
-        if (stage && choice && !stage.isEnd) { // Don't show the "goodbye" choice
+        if (stage && choice && !stage.isEnd) {
             const listItem = document.createElement('li');
             listItem.innerHTML = `<strong>${stage.title}:</strong> ${choice}`;
             finalPlan.appendChild(listItem);
         }
-    });
+    }
 
     finalChoiceText.appendChild(finalPlan);
-
- //  const resetButton = document.createElement('button');
- //  resetButton.textContent = 'Start Over';
-   // resetButton.className = 'reset-button';
-   // resetButton.onclick = resetPage;
- //  finalChoiceText.appendChild(resetButton);
-
     itineraryList.style.display = 'none';
 }
 
@@ -291,8 +269,7 @@ function resetPage() {
     currentIndex = 0;
     selectionHistory = {};
     pathHistory = [0];
-   
-    finalChoiceText.innerHTML = '';
+    
     resultContainer.classList.add('hidden');
     container.style.display = 'block';
     itineraryList.style.display = 'block';
@@ -303,15 +280,17 @@ function resetPage() {
 
 function addResetButton() {
     const resetButtonContainer = document.getElementById('reset-button-container');
-    resetButtonContainer.innerHTML = ''; // Clear previous button if any
-    const resetButton = document.createElement('button');
-    resetButton.textContent = 'Start Over';
-    resetButton.className = 'reset-button';
-    resetButton.onclick = resetPage;
-    resetButtonContainer.appendChild(resetButton);
+    if (resetButtonContainer) {
+        resetButtonContainer.innerHTML = '';
+        const resetButton = document.createElement('button');
+        resetButton.textContent = 'Start Over';
+        resetButton.className = 'reset-button';
+        resetButton.onclick = resetPage;
+        resetButtonContainer.appendChild(resetButton);
+    }
 }
 
-// Initial setup
+// --- Initial Setup ---
 renderCurrentStage();
 updateItineraryList();
 addResetButton();
