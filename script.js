@@ -153,19 +153,22 @@ function renderCurrentStage() {
             });
         }
 
-        const inputContainer = document.createElement('div');
-        const inputField = document.createElement('input');
-        inputField.type = 'text';
-        inputField.id = 'user-input';
-        inputField.placeholder = 'Instead, Dee suggests...';
-        inputContainer.appendChild(inputField);
+        // MODIFICATION: Suggestion box is hidden on the 'stay' event and any event that is an end point.
+        if (stageData.id !== 'stay' && !stageData.isEnd) {
+            const inputContainer = document.createElement('div');
+            const inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.id = 'user-input';
+            inputField.placeholder = 'Instead, Dee suggests...';
+            inputContainer.appendChild(inputField);
 
-        inputField.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter' && inputField.value.trim() !== '') {
-                handleSelection(stageData.id, inputField.value.trim());
-            }
-        });
-        container.appendChild(inputContainer);
+            inputField.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter' && inputField.value.trim() !== '') {
+                    handleSelection(stageData.id, inputField.value.trim());
+                }
+            });
+            container.appendChild(inputContainer);
+        }
 
         if (pathHistory.length > 1) {
             const backButton = document.createElement('button');
@@ -196,22 +199,18 @@ function handleSelection(stageId, choice) {
 
     let nextIndex;
 
-    // --- MODIFICATION: LOGIC FOR 'STAY' AND 'DINNER' PATHS UPDATED ---
-
     if (stageId === 'stay') {
         if (choiceText === 'No') {
-            // If 'No', skip the 'thank-you' note and go straight to dinner.
             nextIndex = itinerary.findIndex(stage => stage.id === 'dinner');
         } else {
-            // If 'Yes', proceed to the next event in the array ('thank-you').
             nextIndex = currentIndex + 1;
         }
     } else if (stageId === 'dinner') {
+        // MODIFICATION: If stay was 'No', go directly to the results screen after dinner.
         if (selectionHistory['stay'] === 'No') {
-            // If the original choice was 'No', end the night after dinner.
-            nextIndex = itinerary.findIndex(stage => stage.id === 'goodnight');
+            showFinalResult();
+            return; // Exit the function to prevent further rendering.
         } else {
-            // Otherwise, continue with the rest of the night's events.
             nextIndex = currentIndex + 1;
         }
     } else if (typeof choice === 'object' && choice.nextStageId) {
@@ -294,7 +293,6 @@ function showFinalResult() {
         const stage = itinerary.find(s => s.id === stageId);
         const choice = selectionHistory[stageId];
         
-        // Only show items with a choice, or special items like 'thank-you'
         if (stage && (choice || stage.autoProceedDelay) && !stage.isEnd) {
              const listItem = document.createElement('li');
              if (stage.autoProceedDelay) {
@@ -315,6 +313,8 @@ function resetPage() {
     currentIndex = 0;
     selectionHistory = {};
     pathHistory = [0];
+    
+    finalChoiceText.innerHTML = '';
     
     resultContainer.classList.add('hidden');
     container.style.display = 'block';
