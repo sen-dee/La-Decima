@@ -153,7 +153,6 @@ function renderCurrentStage() {
             });
         }
 
-        // MODIFICATION: Suggestion box is hidden on the 'stay' event and any event that is an end point.
         if (stageData.id !== 'stay' && !stageData.isEnd) {
             const inputContainer = document.createElement('div');
             const inputField = document.createElement('input');
@@ -206,8 +205,17 @@ function handleSelection(stageId, choice) {
             nextIndex = currentIndex + 1;
         }
     } else if (stageId === 'dinner') {
-        // MODIFICATION: If stay was 'No', go directly to the results screen after dinner.
         if (selectionHistory['stay'] === 'No') {
+            // MODIFICATION: Manually add the final steps to the history before showing results.
+            // 1. Add the current 'dinner' stage to the history.
+            if (pathHistory[pathHistory.length - 1] !== currentIndex) {
+                pathHistory.push(currentIndex);
+            }
+            // 2. Add the final 'goodnight' stage to the history.
+            const goodnightIndex = itinerary.findIndex(stage => stage.id === 'goodnight');
+            if (goodnightIndex !== -1) {
+                pathHistory.push(goodnightIndex);
+            }
             showFinalResult();
             return; // Exit the function to prevent further rendering.
         } else {
@@ -293,14 +301,21 @@ function showFinalResult() {
         const stage = itinerary.find(s => s.id === stageId);
         const choice = selectionHistory[stageId];
         
-        if (stage && (choice || stage.autoProceedDelay) && !stage.isEnd) {
+        // MODIFICATION: The condition is updated to include 'isEnd' stages in the final list.
+        if (stage && (choice || stage.autoProceedDelay || stage.isEnd)) {
              const listItem = document.createElement('li');
-             if (stage.autoProceedDelay) {
+             if (stage.isEnd && stage.id === 'goodnight') {
+                // Special rendering for the 'goodnight' event.
+                listItem.innerHTML = `<strong>${stage.title}</strong>`;
+             } else if (stage.autoProceedDelay) {
                 listItem.innerHTML = `<strong>${stage.title}</strong>: ${stage.description}`;
-             } else {
+             } else if (choice) {
                 listItem.innerHTML = `<strong>${stage.title}:</strong> ${choice}`;
              }
-             finalPlan.appendChild(listItem);
+             // Only add the list item if it has content.
+             if (listItem.innerHTML) {
+                finalPlan.appendChild(listItem);
+             }
         }
     });
 
